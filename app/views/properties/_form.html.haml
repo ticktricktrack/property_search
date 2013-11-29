@@ -1,0 +1,33 @@
+.span12
+  .span3
+    .well.sidebar-nav
+      = form_tag('/search', method: 'post', class: 'form-search') do
+        .control-group
+          = label_tag :q, 'Where?', class: "control-label"
+          .controls
+            = text_field_tag :q, (@q or "Wrexham")
+        .control-group
+          = label_tag :postcode, 'Postcode?', class: "control-label"
+          .controls
+            = text_field_tag :postcode, @postcode
+        .control-group
+          = label_tag :max_bedrooms, 'Max Bedrooms?', class: "control-label"
+          .controls
+            = text_field_tag :max_bedrooms, @max_bedrooms
+
+        .form-actions    
+          = submit_tag 'Search', class: 'btn btn-primary'
+  .span9
+    - @properties.each do |property|
+      .row-fluid
+        .span8.offset1
+          .well
+            .h4
+              = property.display_address
+            %p
+              = "Bedrooms: #{property.bedrooms}"
+            %p
+              = property.price
+            %p
+              - property.photos.first(4).each do |photo|
+                = image_tag (HF_IMAGE_SERVER + photo)
